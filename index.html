@@ -590,6 +590,7 @@
             color: #ff4444;
             margin-top: 15px;
             display: none;
+            font-weight: bold;
         }
 
         .no-scroll {
@@ -734,7 +735,7 @@
                 <input type="password" id="adminPass" placeholder="Şifre" required>
                 <button type="submit">Giriş Yap</button>
             </form>
-            <div class="login-error" id="loginError">❌ Kullan��cı adı veya şifre hatalı!</div>
+            <div class="login-error" id="loginError">❌ Kullanıcı adı veya şifre hatalı!</div>
         </div>
     </div>
 
@@ -902,10 +903,39 @@
         ];
 
         // ===== ADMİN FONKSİYONLARI =====
-        function checkAdminURL() {
-            const hash = window.location.hash;
-            if (hash === '#agaogluadmin') {
-                showLoginPage();
+        function navigateTo(page) {
+            console.log('Navigating to:', page);
+            
+            // Tüm sayfaları gizle
+            document.getElementById('main-header').style.display = 'none';
+            document.getElementById('main-banner').style.display = 'none';
+            document.getElementById('filters-section').style.display = 'none';
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('details-page').style.display = 'none';
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('admin-page').style.display = 'none';
+            document.getElementById('main-footer').style.display = 'none';
+
+            // Seçilen sayfayı göster
+            if (page === 'home') {
+                document.getElementById('main-header').style.display = 'block';
+                document.getElementById('main-banner').style.display = 'block';
+                document.getElementById('filters-section').style.display = 'block';
+                document.getElementById('home-page').style.display = 'block';
+                document.getElementById('main-footer').style.display = 'block';
+                renderGames();
+            } else if (page === 'details') {
+                document.getElementById('main-header').style.display = 'block';
+                document.getElementById('details-page').style.display = 'block';
+                document.getElementById('main-footer').style.display = 'block';
+            } else if (page === 'login') {
+                document.getElementById('login-page').style.display = 'block';
+                document.getElementById('main-footer').style.display = 'block';
+            } else if (page === 'admin') {
+                document.getElementById('admin-page').style.display = 'block';
+                document.getElementById('main-footer').style.display = 'block';
+                renderAdminGamesList();
+                resetForm();
             }
         }
 
@@ -914,46 +944,17 @@
             const user = document.getElementById('adminUser').value;
             const pass = document.getElementById('adminPass').value;
 
+            console.log('Login attempt:', user);
+
             if (user === adminCreds.user && pass === adminCreds.pass) {
+                console.log('Login successful!');
                 localStorage.setItem('pureplay_admin_logged', 'true');
                 document.getElementById('loginError').style.display = 'none';
-                showAdminPanel();
+                navigateTo('admin');
             } else {
+                console.log('Login failed!');
                 document.getElementById('loginError').style.display = 'block';
             }
-        }
-
-        function showLoginPage() {
-            document.getElementById('main-header').style.display = 'none';
-            document.getElementById('main-banner').style.display = 'none';
-            document.getElementById('filters-section').style.display = 'none';
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('details-page').style.display = 'none';
-            document.getElementById('admin-page').style.display = 'none';
-            document.getElementById('main-footer').style.display = 'none';
-            document.getElementById('login-page').style.display = 'block';
-            document.body.classList.add('no-scroll');
-        }
-
-        function showAdminPanel() {
-            document.getElementById('main-header').style.display = 'none';
-            document.getElementById('main-banner').style.display = 'none';
-            document.getElementById('filters-section').style.display = 'none';
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('details-page').style.display = 'none';
-            document.getElementById('login-page').style.display = 'none';
-            document.getElementById('main-footer').style.display = 'none';
-            document.getElementById('admin-page').style.display = 'block';
-            document.body.classList.add('no-scroll');
-            
-            renderAdminGamesList();
-            resetForm();
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('pureplay_admin_logged');
-            window.location.hash = '';
-            location.reload();
         }
 
         function renderAdminGamesList() {
@@ -1042,6 +1043,12 @@
             }
         }
 
+        function handleLogout() {
+            localStorage.removeItem('pureplay_admin_logged');
+            window.location.hash = '';
+            navigateTo('home');
+        }
+
         // ===== GENEL FONKSİYONLAR =====
         function renderGames(filter = 'All', searchTerm = '') {
             const container = document.getElementById('game-container');
@@ -1085,9 +1092,7 @@
             const game = games.find(g => g.id === id);
             const renderArea = document.getElementById('details-render');
             
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('details-page').style.display = 'block';
-            document.getElementById('filters-section').style.display = 'none';
+            navigateTo('details');
 
             renderArea.innerHTML = `
                 <div class="details-container">
@@ -1118,11 +1123,8 @@
         }
 
         function showHome() {
-            document.getElementById('home-page').style.display = 'block';
-            document.getElementById('details-page').style.display = 'none';
-            document.getElementById('filters-section').style.display = 'block';
+            navigateTo('home');
             document.getElementById('searchBox').value = '';
-            renderGames();
         }
 
         function filterGames(cat) {
@@ -1138,17 +1140,33 @@
             renderGames('All', searchTerm);
         }
 
-        // İlk açılışta
-        checkAdminURL();
-        
-        if (localStorage.getItem('pureplay_admin_logged')) {
-            showAdminPanel();
-        } else {
-            renderGames();
-        }
+        // ===== URL HASH DİNLEYİCİ =====
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            console.log('Hash changed to:', hash);
+            
+            if (hash === 'agaogluadmin') {
+                navigateTo('login');
+            } else {
+                navigateTo('home');
+            }
+        });
 
-        // Admin URL'sini dinle
-        window.addEventListener('hashchange', checkAdminURL);
+        // İLK AÇILIŞTA
+        window.addEventListener('load', function() {
+            const hash = window.location.hash.substring(1);
+            console.log('Initial hash:', hash);
+            
+            if (hash === 'agaogluadmin') {
+                if (localStorage.getItem('pureplay_admin_logged')) {
+                    navigateTo('admin');
+                } else {
+                    navigateTo('login');
+                }
+            } else {
+                navigateTo('home');
+            }
+        });
     </script>
 </body>
 </html>
