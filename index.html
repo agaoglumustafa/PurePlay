@@ -1,67 +1,483 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PurePlay | Digital Game Vault</title>
+    <title>PurePlay | Crackli Oyun Kütüphanesi</title>
     <style>
-        :root { --main-color: #00ff88; --bg-dark: #0f0f0f; --card-bg: #1f1f1f; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-dark); color: white; margin: 0; padding-bottom: 50px; }
+        :root { 
+            --main-color: #00ff88; 
+            --bg-dark: #0f0f0f; 
+            --card-bg: #1f1f1f;
+            --hover-color: #00dd6d;
+        }
         
-        /* Navigasyon ve Menü */
-        nav { background: #1a1a1a; padding: 15px 5%; border-bottom: 2px solid var(--main-color); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo { color: var(--main-color); font-size: 1.5rem; font-weight: bold; text-decoration: none; letter-spacing: 2px; }
-        .menu { display: flex; gap: 20px; }
-        .menu a { color: #aaa; text-decoration: none; font-size: 0.9rem; transition: 0.3s; cursor: pointer; }
-        .menu a:hover, .menu a.active { color: var(--main-color); }
-
-        /* Ana Ekran (Liste) */
-        .container { display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
-        .game-card { background: var(--card-bg); border-radius: 12px; overflow: hidden; width: 280px; cursor: pointer; transition: 0.3s; border: 1px solid #333; }
-        .game-card:hover { transform: translateY(-5px); border-color: var(--main-color); }
-        .game-img { width: 100%; height: 160px; object-fit: cover; }
-        .game-info { padding: 15px; text-align: left; }
-        .game-info h3 { margin: 0; font-size: 1.1rem; }
-        .category-tag { font-size: 0.7rem; color: var(--main-color); font-weight: bold; }
-
-        /* Detay Sayfası (Gizli) */
-        #details-page { display: none; padding: 40px 10%; max-width: 1000px; margin: 0 auto; text-align: left; }
-        .back-btn { background: #333; color: white; padding: 8px 15px; border-radius: 5px; cursor: pointer; display: inline-block; margin-bottom: 20px; }
-        .details-flex { display: flex; gap: 40px; flex-wrap: wrap; }
-        .details-img { width: 400px; border-radius: 10px; border: 1px solid #444; }
-        .details-content { flex: 1; min-width: 300px; }
-        .download-box { background: #252525; padding: 20px; border-radius: 10px; margin-top: 20px; border-left: 4px solid var(--main-color); }
-        .main-dl-btn { background: var(--main-color); color: black; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; margin-top: 10px; }
-
-        footer { text-align: center; margin-top: 50px; color: #555; font-size: 0.8rem; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--bg-dark); 
+            color: white; 
+            padding-bottom: 50px;
+        }
+        
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            padding: 20px 0;
+            border-bottom: 3px solid var(--main-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            color: var(--main-color);
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-menu a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--main-color);
+        }
+        
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--main-color);
+            border-radius: 2px;
+        }
+        
+        .search-box {
+            background: #252525;
+            border: 1px solid #333;
+            padding: 8px 15px;
+            border-radius: 6px;
+            color: white;
+            width: 220px;
+            transition: 0.3s;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: var(--main-color);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+        }
+        
+        /* ===== BANNER ===== */
+        .banner {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%);
+            padding: 40px 5%;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            max-width: 100%;
+        }
+        
+        .banner h1 {
+            font-size: 2.5rem;
+            color: var(--main-color);
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+        
+        .banner p {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+        
+        /* ===== KATEGORİ FİLTRE ===== */
+        .filters {
+            background: #1a1a1a;
+            padding: 25px 5%;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .filter-btn {
+            background: #252525;
+            color: #aaa;
+            border: 1px solid #333;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--main-color);
+            color: black;
+            border-color: var(--main-color);
+            transform: translateY(-2px);
+        }
+        
+        /* ===== OYUN LİSTESİ ===== */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 40px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--main-color);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.2);
+        }
+        
+        .game-img-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            background: #2a2a2a;
+        }
+        
+        .game-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .game-card:hover .game-img {
+            transform: scale(1.05);
+        }
+        
+        .game-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--main-color);
+            color: black;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .game-info {
+            padding: 15px;
+        }
+        
+        .game-category {
+            color: var(--main-color);
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .game-info h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            color: white;
+        }
+        
+        .game-download-count {
+            color: #888;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+        
+        /* ===== DETAY SAYFASI ===== */
+        #details-page {
+            display: none;
+            padding: 30px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .back-btn {
+            background: linear-gradient(135deg, #252525 0%, #1a1a1a 100%);
+            color: var(--main-color);
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 30px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--main-color);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+            transform: translateX(-5px);
+        }
+        
+        .details-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .details-img {
+            width: 100%;
+            border-radius: 12px;
+            border: 2px solid #333;
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.1);
+        }
+        
+        .details-content h1 {
+            font-size: 2rem;
+            color: var(--main-color);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+        }
+        
+        .details-category {
+            color: var(--main-color);
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        
+        .details-desc {
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+        
+        .download-box {
+            background: linear-gradient(135deg, #252525 0%, #1a1a1a 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid var(--main-color);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .download-box h3 {
+            color: var(--main-color);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .download-stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .download-stat span:first-child {
+            color: #888;
+        }
+        
+        .download-stat span:last-child {
+            color: var(--main-color);
+            font-weight: bold;
+        }
+        
+        .main-dl-btn {
+            background: linear-gradient(135deg, var(--main-color) 0%, var(--hover-color) 100%);
+            color: black;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .main-dl-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.3);
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-menu {
+                width: 100%;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .banner h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+            
+            .details-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .filter-buttons {
+                gap: 8px;
+            }
+            
+            .filter-btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 30px 5%;
+            background: #1a1a1a;
+            border-top: 1px solid #333;
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 50px;
+        }
+        
+        footer p {
+            margin-bottom: 8px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+        
+        .no-results p {
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#" class="logo" onclick="showHome()">PUREPLAY</a>
-        <div class="menu">
-            <a onclick="filterGames('All')" class="active">All</a>
-            <a onclick="filterGames('Simulation')">Simulation</a>
-            <a onclick="filterGames('Action')">Action</a>
-            <a onclick="filterGames('RPG')">RPG</a>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <a href="#" class="logo" onclick="showHome(); return false;">PUREPLAY</a>
+            <div class="nav-menu">
+                <a href="#" onclick="showHome(); return false;" class="active">Anasayfa</a>
+                <a href="#" onclick="filterGames('All'); return false;">Tüm Oyunlar</a>
+                <a href="#" onclick="filterGames('Action'); return false;">Action</a>
+                <a href="#" onclick="filterGames('RPG'); return false;">RPG</a>
+                <a href="#" onclick="filterGames('Simulation'); return false;">Simulasyon</a>
+                <input type="text" class="search-box" id="searchBox" placeholder="Oyun ara..." onkeyup="searchGames()">
+            </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- ANA LİSTE EKRANI -->
+    <!-- BANNER -->
+    <div class="banner">
+        <h1>🎮 PUREPLAY - Crackli Oyun Kütüphanesi</h1>
+        <p>En popüler ve güncel oyunlara tek tıkla erişin. Saf performans, kesintisiz eğlence!</p>
+    </div>
+
+    <!-- AYRIÇ FILTERLER -->
+    <div class="filters" id="filters-section">
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterGames('All')">Tümü</button>
+            <button class="filter-btn" onclick="filterGames('Action')">Action</button>
+            <button class="filter-btn" onclick="filterGames('RPG')">RPG</button>
+            <button class="filter-btn" onclick="filterGames('Simulation')">Simulasyon</button>
+            <button class="filter-btn" onclick="filterGames('Adventure')">Adventure</button>
+            <button class="filter-btn" onclick="filterGames('Strategy')">Strateji</button>
+        </div>
+    </div>
+
+    <!-- ANA OYUN LİSTESİ -->
     <div id="home-page">
         <div class="container" id="game-container">
             <!-- Oyunlar buraya JS ile dolacak -->
         </div>
     </div>
 
-    <!-- DETAY EKRANI -->
+    <!-- DETAY SAYFASI -->
     <div id="details-page">
-        <div class="back-btn" onclick="showHome()">← Back to Games</div>
+        <a href="#" class="back-btn" onclick="showHome(); return false;">← Geri Dön</a>
         <div id="details-render"></div>
     </div>
 
-    <footer><p>&copy; 2026 PurePlay Vault.</p></footer>
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 PurePlay - Oyun Kütüphanesi. Tüm hakları saklıdır.</p>
+        <p>Sorumlu: <strong>agaoglumustafa</strong> | Crackli Oyunlar İçin Güvenilir Kaynak</p>
+    </footer>
 
     <script>
         // Oyun Veri Bankası
@@ -71,26 +487,115 @@
                 title: 'OMSI 2: Steam Edition',
                 category: 'Simulation',
                 img: 'https://steamrip.com/wp-content/uploads/2021/08/omsi-2-free-download-preinstalled-steamrip.jpg',
-                desc: 'OMSI 2 is the successor to the world-famous and awarded omnibus simulator. It offers a lot of new features, such as new lines, improved AI, and a much larger world to explore.',
+                desc: 'Dünya çapında ünlü otobüs simülatörü OMSI 2, gerçekçi şehir safarileri ve yönetim görevleri sunar. Yüzlerce mod desteğiyle sonsuz oynanış.',
                 link: 'https://steamrip.com/omsi-2-steam-edition-free-download-k1/',
-                downloads: '1,248'
+                downloads: '1,248',
+                size: '2.5 GB'
             },
-            // İleride buraya yeni oyun objeleri ekleyebilirsin
+            {
+                id: 'cyberpunk2077',
+                title: 'Cyberpunk 2077',
+                category: 'Action',
+                img: 'https://steamrip.com/wp-content/uploads/2020/12/cyberpunk-2077-free-download-steamrip.jpg',
+                desc: 'CD Projekt Red tarafından geliştirilen Cyberpunk 2077, distopik Night City\'de gerçekleşen epik bir RPG. V\'nin hikayesini yaşayın, işler kötüye gittiğinde.',
+                link: 'https://steamrip.com/',
+                downloads: '5,842',
+                size: '150 GB'
+            },
+            {
+                id: 'rimworld',
+                title: 'RimWorld',
+                category: 'Strategy',
+                img: 'https://steamrip.com/wp-content/uploads/2018/10/rimworld-free-download-steamrip.jpg',
+                desc: 'Hayalperest kolonistlerin bir grup uzak gezegene indiğini hayal edin. RimWorld ile kurmaca etkinliklerin ve gelişen hikayelerin ortasında kalacaksınız.',
+                link: 'https://steamrip.com/',
+                downloads: '3,456',
+                size: '500 MB'
+            },
+            {
+                id: 'elden',
+                title: 'ELDEN RING',
+                category: 'Action',
+                img: 'https://steamrip.com/wp-content/uploads/2022/02/elden-ring-free-download-steamrip.jpg',
+                desc: 'FromSoftware ve George R. R. Martin işbirliği. Açık dünya action RPG oyunun yeni standardını belirliyor. Düşmanları mağlup edin, sanatı keşfedin.',
+                link: 'https://steamrip.com/',
+                downloads: '8,234',
+                size: '60 GB'
+            },
+            {
+                id: 'baldurs3',
+                title: "Baldur's Gate 3",
+                category: 'RPG',
+                img: 'https://steamrip.com/wp-content/uploads/2023/08/baldurs-gate-3-free-download-steamrip.jpg',
+                desc: 'Larian Studios\'un başyapıtı. D&D 5e kurallarına sadık kalarak, sonsuz oylanış olanaklarıyla tatmin edici bir RPG.',
+                link: 'https://steamrip.com/',
+                downloads: '7,123',
+                size: '150 GB'
+            },
+            {
+                id: 'starfield',
+                title: 'Starfield',
+                category: 'RPG',
+                img: 'https://steamrip.com/wp-content/uploads/2023/09/starfield-free-download-steamrip.jpg',
+                desc: 'Bethesda tarafından hazırlanan uzay-bağlı RPG. Binlerce gezegen keşfedin, çeşitli görevleri tamamlayın ve galaksiyi istediğiniz gibi şekillendirin.',
+                link: 'https://steamrip.com/',
+                downloads: '6,789',
+                size: '130 GB'
+            },
+            {
+                id: 'ac-mirage',
+                title: 'Assassin\'s Creed Mirage',
+                category: 'Action',
+                img: 'https://steamrip.com/wp-content/uploads/2023/10/assassins-creed-mirage-free-download-steamrip.jpg',
+                desc: '9. Yüzyıl Bağdadı\'nda geçen bu oyunda Basim\'in hikayeleri keşfedin. Klasik oyunlardan esinlenen, aksiyonlu bir macera.',
+                link: 'https://steamrip.com/',
+                downloads: '4,567',
+                size: '45 GB'
+            },
+            {
+                id: 'hogwarts',
+                title: 'Hogwarts Legacy',
+                category: 'Adventure',
+                img: 'https://steamrip.com/wp-content/uploads/2023/02/hogwarts-legacy-free-download-steamrip.jpg',
+                desc: 'Harry Potter evreninde Hogwarts\'ta oku, büyücü olarak eğit ve karanlık gücü yenmeye yardım et.',
+                link: 'https://steamrip.com/',
+                downloads: '5,432',
+                size: '100 GB'
+            }
         ];
 
-        function renderGames(filter = 'All') {
+        function renderGames(filter = 'All', searchTerm = '') {
             const container = document.getElementById('game-container');
+            
+            let filtered = games;
+            
+            if (filter !== 'All') {
+                filtered = filtered.filter(g => g.category === filter);
+            }
+            
+            if (searchTerm) {
+                filtered = filtered.filter(g => 
+                    g.title.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+            
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="no-results"><p>😔 Oyun bulunamadı. Lütfen başka bir arama yapın.</p></div>';
+                return;
+            }
+            
             container.innerHTML = '';
-            
-            const filtered = filter === 'All' ? games : games.filter(g => g.category === filter);
-            
             filtered.forEach(game => {
                 container.innerHTML += `
                     <div class="game-card" onclick="showDetails('${game.id}')">
-                        <img src="${game.img}" class="game-img">
+                        <div class="game-img-container">
+                            <img src="${game.img}" class="game-img" alt="${game.title}">
+                            <div class="game-badge">${game.category}</div>
+                        </div>
                         <div class="game-info">
-                            <span class="category-tag">${game.category}</span>
+                            <div class="game-category">${game.category}</div>
                             <h3>${game.title}</h3>
+                            <div class="game-download-count">⬇️ ${game.downloads} İndirme</div>
                         </div>
                     </div>
                 `;
@@ -103,35 +608,56 @@
             
             document.getElementById('home-page').style.display = 'none';
             document.getElementById('details-page').style.display = 'block';
+            document.getElementById('filters-section').style.display = 'none';
 
             renderArea.innerHTML = `
-                <div class="details-flex">
-                    <img src="${game.img}" class="details-img">
+                <div class="details-container">
+                    <div>
+                        <img src="${game.img}" class="details-img" alt="${game.title}">
+                    </div>
                     <div class="details-content">
                         <h1>${game.title}</h1>
-                        <p class="category-tag">${game.category}</p>
-                        <p style="color: #ccc; line-height: 1.6;">${game.desc}</p>
+                        <div class="details-category">${game.category}</div>
+                        <p class="details-desc">${game.desc}</p>
+                        
                         <div class="download-box">
-                            <p>Download Count: <strong>${game.downloads}</strong></p>
-                            <a href="${game.link}" target="_blank" class="main-dl-btn">DOWNLOAD GAME</a>
+                            <h3>📥 İndirme Bilgileri</h3>
+                            <div class="download-stat">
+                                <span>Toplam İndirme:</span>
+                                <span>${game.downloads}</span>
+                            </div>
+                            <div class="download-stat">
+                                <span>Dosya Boyutu:</span>
+                                <span>${game.size}</span>
+                            </div>
+                            <a href="${game.link}" target="_blank" class="main-dl-btn">🎮 OYUNU İNDİR</a>
                         </div>
                     </div>
                 </div>
             `;
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         }
 
         function showHome() {
             document.getElementById('home-page').style.display = 'block';
             document.getElementById('details-page').style.display = 'none';
+            document.getElementById('filters-section').style.display = 'block';
+            document.getElementById('searchBox').value = '';
+            renderGames();
         }
 
         function filterGames(cat) {
-            renderGames(cat);
-            // Menü aktiflik durumunu güncelle
-            document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
+            renderGames(cat, document.getElementById('searchBox').value);
+            // Aktif butonu güncelle
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
             event.target.classList.add('active');
-            showHome();
+        }
+
+        function searchGames() {
+            const searchTerm = document.getElementById('searchBox').value;
+            renderGames('All', searchTerm);
         }
 
         // İlk açılışta oyunları yükle
