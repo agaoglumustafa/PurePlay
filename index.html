@@ -5,29 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PurePlay | Digital Game Vault</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: white; text-align: center; margin: 0; }
-        nav { background: #1a1a1a; padding: 20px; border-bottom: 2px solid #333; }
-        .container { padding: 50px; }
-        .game-card { background: #1f1f1f; border-radius: 10px; padding: 20px; display: inline-block; width: 250px; margin: 15px; transition: 0.3s; border: 1px solid #444; }
-        .game-card:hover { transform: translateY(-10px); border-color: #00ff88; }
-        .btn { background: #00ff88; color: black; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        h1 { color: #00ff88; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f0f; color: white; text-align: center; margin: 0; padding-bottom: 50px; }
+        nav { background: #1a1a1a; padding: 20px; border-bottom: 2px solid #00ff88; position: sticky; top: 0; z-index: 100; }
+        .logo { color: #00ff88; font-size: 1.8rem; font-weight: bold; text-decoration: none; letter-spacing: 2px; }
+        
+        .hero { padding: 60px 20px; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1350&q=80'); background-size: cover; margin-bottom: 30px; }
+        .hero h2 { font-size: 2.5rem; margin-bottom: 10px; }
+        .hero p { color: #888; max-width: 600px; margin: 0 auto; }
+
+        .container { display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        
+        .game-card { background: #1f1f1f; border-radius: 12px; overflow: hidden; width: 300px; border: 1px solid #333; transition: all 0.3s ease; position: relative; }
+        .game-card:hover { transform: translateY(-10px); border-color: #00ff88; box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2); }
+        
+        .game-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid #333; }
+        .game-info { padding: 20px; text-align: left; }
+        .game-title { font-size: 1.2rem; margin: 0 0 10px 0; color: #fff; }
+        .game-tags { font-size: 0.8rem; color: #00ff88; margin-bottom: 15px; text-transform: uppercase; font-weight: bold; }
+        
+        .btn { display: block; background: #00ff88; color: #000; text-align: center; padding: 12px; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.2s; }
+        .btn:hover { background: #00cc6e; }
+        
+        .stats { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 15px; border-top: 1px solid #333; font-size: 0.85rem; color: #aaa; }
+        .dl-count { font-weight: bold; color: #fff; }
+
+        footer { margin-top: 50px; color: #555; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-    <nav><h1>PUREPLAY</h1></nav>
-    <div class="container">
-        <h2>Latest Uploads</h2>
-        <div class="game-card">
-            <h3>Sample Game 1</h3>
-            <p>Action, Adventure</p>
-            <a href="#" class="btn">Download</a>
-        </div>
-        <div class="game-card">
-            <h3>Sample Game 2</h3>
-            <p>Strategy, RPG</p>
-            <a href="#" class="btn">Download</a>
-        </div>
+
+    <nav>
+        <a href="#" class="logo">PUREPLAY</a>
+    </nav>
+
+    <div class="hero">
+        <h2>Digital Game Vault</h2>
+        <p>PurePlay, en güncel oyun içeriklerine ve dijital arşivlere hızlı erişim sağlayan bir projedir. Oyunun en saf hali burada!</p>
     </div>
+
+    <div class="container">
+        
+        <!-- OMSI 2 Kartı -->
+        <div class="game-card">
+            <img src="https://steamrip.com/wp-content/uploads/2021/08/omsi-2-free-download-preinstalled-steamrip.jpg" class="game-img" alt="OMSI 2">
+            <div class="game-info">
+                <div class="game-tags">Simulation • Realistic</div>
+                <h3 class="game-title">OMSI 2: Steam Edition</h3>
+                <a href="https://steamrip.com/omsi-2-steam-edition-free-download-k1/" target="_blank" class="btn" onclick="inc('omsi2')">Download Now</a>
+                <div class="stats">
+                    <span>Status: <span style="color: #00ff88;">Working</span></span>
+                    <span>Downloads: <span id="count-omsi2" class="dl-count">1,248</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buraya yeni oyunlar ekleyebilirsin -->
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 PurePlay Vault. For educational purposes only.</p>
+    </footer>
+
+    <script>
+        // Basit Sayaç Fonksiyonu
+        function inc(id) {
+            let el = document.getElementById('count-' + id);
+            let val = parseInt(el.innerText.replace(',', ''));
+            el.innerText = (val + 1).toLocaleString();
+            
+            // Kullanıcıya bilgi ver
+            console.log(id + " indiriliyor...");
+        }
+    </script>
+
 </body>
 </html>
